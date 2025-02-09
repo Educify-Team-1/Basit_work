@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 import psycopg2
 from dotenv import load_dotenv
@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 load_dotenv()
 
-# Database connection
+# database connection
 conn = psycopg2.connect(
     host=os.getenv("DB_HOST"),
     database=os.getenv("DATABASE"),
@@ -20,31 +20,28 @@ cursor = conn.cursor()
 app = FastAPI()
 
 
-# Define request body schema using Pydantic
 class Student(BaseModel):
     desired_subject: str
-    distance: int
     grade_level: str
-    # language_preference: Optional[str]  # Add this field if language preference is considered
+    preferred_location: str 
 
 
-# subject, location, availability of teacher, and grade_level
 def fetch_teachers(student: Dict[str, Any]):
     query = """
-    SELECT T.id, T.available, L."title", T.rating, L."travelDistance"
+    SELECT T.id, T.available, L."title", T.rating, L."location"
     FROM "Teacher" AS T
     JOIN "Lesson" AS L ON T.id = L."teacherId"
     WHERE T.available = true
-    AND L."title" = %(desired_subject)s
-    AND L."travelDistance" <= %(distance)s
-    AND L."level" = %(grade)s
+      AND L."title" = %(desired_subject)s
+      AND L."level" = %(grade_level)s
+      AND %(preferred_location)s = ANY(L."location")
     """
     cursor.execute(
         query,
         {
             "desired_subject": student["desired_subject"],
-            "distance": student["distance"],
-            "grade": student["grade_level"],
+            "grade_level": student["grade_level"],
+            "preferred_location": student["preferred_location"],
         },
     )
 
@@ -53,24 +50,24 @@ def fetch_teachers(student: Dict[str, Any]):
 
 
 def calculate_matching_score(student: Dict[str, Any], teacher: tuple):
-    # Assuming teacher is a tuple based on fetch_teachers query result
-    teacher_id, available, skills, rating, distance = teacher
+    # Unpack the teacher tuple: (id, available, title, rating, location)
+    teacher_id, available, title, rating, locations = teacher
 
     score = 0
-    # Subject match
-    if student["desired_subject"] in skills:
-        score += 10  # Subject expertise is highly valued
 
-    # Availability match (already checked by fetch, so adding score)
+    # Subject match bonus (should always be true due to the SQL filter,
+    # but included here for clarity)
+    if student["desired_subject"].lower() == title.lower():
+        score += 10
+
+    # Bonus for availability
     if available:
-        score += 5  # Teacher is available
+        score += 5
 
-    # Experience & Rating match
-    score += rating  # Higher rating, higher score
+    score += rating
 
-    # Distance match
-    if student["distance"] is not None and distance <= student["distance"]:
-        score += 2  # Closer distance bonus
+    if isinstance(locations, list) and len(locations) > 1:
+        score += 2
 
     return score
 
@@ -78,28 +75,26 @@ def calculate_matching_score(student: Dict[str, Any], teacher: tuple):
 @app.post("/recommend-teachers/")
 async def recommend_teachers(student: Student):
     try:
-        # Fetch teachers based on student information
+        # Fetch teachers based on the student's criteria
         teachers = fetch_teachers(student.dict())
         teacher_scores = []
 
-        # Calculate matching scores
+        # Calculate a matching score for each teacher
         for teacher in teachers:
             score = calculate_matching_score(student.dict(), teacher)
-            teacher_scores.append(
-                {"teacher_id": teacher[0], "score": score}  # teacher[0] is the "id"
-            )
+            teacher_scores.append({"teacher_id": teacher[0], "score": score})
 
-        # Sort by matching score in descending order
+        # Sort teachers by matching score in descending order
         teacher_scores.sort(key=lambda x: x["score"], reverse=True)
 
-        # Return top 3 recommendations
-        return {"recommended_teachers": teacher_scores[:3]}  # Return top 3
+        # Return the top 3 teacher recommendations
+        return {"recommended_teachers": teacher_scores[:3]}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# Close the database connection after server shutdown
+# Close the database connection when the server shuts down
 @app.on_event("shutdown")
 def shutdown_db():
     cursor.close()
