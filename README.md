@@ -1,1 +1,0 @@
-# educify-student-teacher-pairing
