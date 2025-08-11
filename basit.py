@@ -1,10 +1,17 @@
-import os
+import os  # noqa
 import random
 import sys
 from typing import Any, Dict
 from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks
 from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey, Float
+from sqlalchemy import (
+    create_engine,
+    Column,
+    Integer,
+    String,
+    Boolean,
+    ForeignKey,
+    Float)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 
@@ -15,12 +22,14 @@ engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+
 # ---------------- Database Models ----------------
 class Teacher(Base):
     __tablename__ = "Teacher"
     id = Column(Integer, primary_key=True, index=True)
     available = Column(Boolean, default=True)
     rating = Column(Float, default=0.0)
+
 
 class Lesson(Base):
     __tablename__ = "Lesson"
@@ -29,6 +38,7 @@ class Lesson(Base):
     level = Column(String, index=True)
     travelDistance = Column(Integer)
     teacherId = Column(Integer, ForeignKey("Teacher.id"))
+
 
 class Booking(Base):
     __tablename__ = "Booking"
@@ -39,12 +49,14 @@ class Booking(Base):
     status = Column(String, default="pending")  # "pending" or "accepted"
     accepted_teacher_id = Column(Integer, nullable=True)
 
+
 class TeacherNotification(Base):
     __tablename__ = "TeacherNotification"
     id = Column(Integer, primary_key=True, index=True)
     booking_id = Column(Integer, ForeignKey("Booking.id"))
     teacher_id = Column(Integer)
     active = Column(Boolean, default=True)
+
 
 class StudentProfile(Base):
     __tablename__ = "StudentProfile"
@@ -53,11 +65,13 @@ class StudentProfile(Base):
     email = Column(String, unique=True, index=True)
     phone = Column(String, index=True)
 
+
 # Create tables (and the SQLite file if it doesn't exist)
 Base.metadata.create_all(bind=engine)
 
 # ---------------- FastAPI Application ----------------
 app = FastAPI()
+
 
 # Dependency to get a DB session
 def get_db():
@@ -67,20 +81,26 @@ def get_db():
     finally:
         db.close()
 
+
 # ---------------- Pydantic Models ----------------
 class Student(BaseModel):
     desired_subject: str
     distance: int
     grade_level: str
 
+
 class TeacherResponse(BaseModel):
     booking_id: int
     teacher_id: int
     response: str  # Expected values: "accept" or "deny"
 
+
 # ---------------- Helper Functions ----------------
 def fetch_teachers(db: Session, student: Dict[str, Any]):
-    return db.query(Teacher.id, Teacher.available, Lesson.title, Teacher.rating, Lesson.travelDistance)\
+    return db.query(
+        Teacher.id,
+        Teacher.available,
+        Lesson.title, Teacher.rating, Lesson.travelDistance)\
         .join(Lesson, Teacher.id == Lesson.teacherId)\
         .filter(
             Teacher.available == True,
@@ -88,6 +108,7 @@ def fetch_teachers(db: Session, student: Dict[str, Any]):
             Lesson.travelDistance <= student["distance"],
             Lesson.level == student["grade_level"]
         ).all()
+
 
 def calculate_matching_score(student: Dict[str, Any], teacher: tuple):
     teacher_id, available, title, rating, distance = teacher
@@ -101,12 +122,17 @@ def calculate_matching_score(student: Dict[str, Any], teacher: tuple):
         score += 2
     return score
 
+
 def send_notification(teacher_id: int, booking_id: int):
-    print(f"Notification sent to Teacher {teacher_id} for Booking {booking_id}")
+    print(
+        f"Notification sent to Teacher {teacher_id} for Booking {booking_id}")
+
 
 # ---------------- API Endpoints ----------------
 @app.post("/book-free-trial/")
-async def book_free_trial(student: Student, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+async def book_free_trial(student: Student,
+                          background_tasks: BackgroundTasks,
+                          db: Session = Depends(get_db)):
     try:
         booking = Booking(
             desired_subject=student.desired_subject,
@@ -117,21 +143,25 @@ async def book_free_trial(student: Student, background_tasks: BackgroundTasks, d
         db.add(booking)
         db.commit()
         db.refresh(booking)
-        
+
         teachers = fetch_teachers(db, student.dict())
         teacher_scores = [
-            {"teacher_id": teacher[0], "score": calculate_matching_score(student.dict(), teacher)}
+            {"teacher_id": teacher[0], "score": calculate_matching_score(
+                student.dict(), teacher)}
             for teacher in teachers
         ]
         teacher_scores.sort(key=lambda x: x["score"], reverse=True)
         recommended = teacher_scores[:3]
-        
+
         for rec in recommended:
-            notification = TeacherNotification(booking_id=booking.id, teacher_id=rec["teacher_id"], active=True)
+            notification = TeacherNotification(booking_id=booking.id,
+                                               teacher_id=rec["teacher_id"],
+                                               active=True)
             db.add(notification)
             db.commit()
-            background_tasks.add_task(send_notification, rec["teacher_id"], booking.id)
-        
+            background_tasks.add_task(send_notification, rec["teacher_id"],
+                                      booking.id)
+
         return {
             "message": "Booking created and notifications sent.",
             "booking_id": booking.id,
@@ -141,16 +171,19 @@ async def book_free_trial(student: Student, background_tasks: BackgroundTasks, d
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.post("/teacher-response/")
-async def teacher_response(response: TeacherResponse, db: Session = Depends(get_db)):
+async def teacher_response(response: TeacherResponse,
+                           db: Session = Depends(get_db)):
     try:
-        booking = db.query(Booking).filter(Booking.id == response.booking_id).first()
+        booking = db.query(Booking).filter(
+            Booking.id == response.booking_id).first()
         if not booking:
             raise HTTPException(status_code=404, detail="Booking not found")
-        
+
         if booking.status == "accepted":
             return {"message": "Booking already accepted by another teacher."}
-        
+
         if response.response.lower() == "accept":
             booking.status = "accepted"
             booking.accepted_teacher_id = response.teacher_id
@@ -160,19 +193,26 @@ async def teacher_response(response: TeacherResponse, db: Session = Depends(get_
                       TeacherNotification.teacher_id != response.teacher_id)\
               .update({"active": False})
             db.commit()
-            return {"message": f"Booking accepted by Teacher {response.teacher_id}"}
+            return {
+                "message": f"Booking accepted by Teacher {response.teacher_id}"
+                }
         elif response.response.lower() == "deny":
             db.query(TeacherNotification)\
               .filter(TeacherNotification.booking_id == booking.id,
                       TeacherNotification.teacher_id == response.teacher_id)\
               .update({"active": False})
             db.commit()
-            return {"message": f"Teacher {response.teacher_id} denied the booking."}
+            return {
+                "message": f"Teacher {response.teacher_id} denied the booking."
+                }
         else:
-            raise HTTPException(status_code=400, detail="Invalid response. Use 'accept' or 'deny'.")
+            raise HTTPException(
+                status_code=400, detail="Invalid response.\
+                    Use 'accept' or 'deny'.")
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+
 
 # ---------------- Database Seeding ----------------
 def seed_data():
@@ -182,7 +222,7 @@ def seed_data():
       - 2 sample student profiles
     """
     db = SessionLocal()
-    
+
     # Insert 200 teachers and their associated lessons
     for i in range(1, 201):
         available = random.choice([True, True, True, False])
@@ -191,7 +231,7 @@ def seed_data():
         db.add(teacher)
         db.commit()
         db.refresh(teacher)
-        
+
         travel_distance = random.randint(5, 20)
         lesson = Lesson(
             title="Mathematics",
@@ -201,16 +241,21 @@ def seed_data():
         )
         db.add(lesson)
         db.commit()
-    
+
     # Insert sample student profiles
-    student1 = StudentProfile(name="Alice Johnson", email="alice@example.com", phone="1234567890")
-    student2 = StudentProfile(name="Bob Smith", email="bob@example.com", phone="0987654321")
+    student1 = StudentProfile(
+        name="Alice Johnson", email="alice@example.com", phone="1234567890")
+    student2 = StudentProfile(
+        name="Bob Smith", email="bob@example.com", phone="0987654321")
     db.add(student1)
     db.add(student2)
     db.commit()
-    
-    print("Database seeded successfully with 200 teachers, lessons, and sample student profiles!")
+
+    print(
+        "Database seeded successfully with 200 teachers, lessons,\
+        and sample student profiles!")
     db.close()
+
 
 # ---------------- Main Block ----------------
 if __name__ == '__main__':

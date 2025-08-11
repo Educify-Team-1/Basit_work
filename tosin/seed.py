@@ -13,8 +13,12 @@ db.add(teacher2)
 db.commit()
 
 # Create sample lessons for each teacher
-lesson1 = Lesson(title="Mathematics", level="Intermediate", travelDistance=10, teacherId=teacher1.id)
-lesson2 = Lesson(title="Mathematics", level="Intermediate", travelDistance=5, teacherId=teacher2.id)
+lesson1 = Lesson(
+    title="Mathematics", level="Intermediate", travelDistance=10,
+    teacherId=teacher1.id)
+lesson2 = Lesson(
+    title="Mathematics", level="Intermediate", travelDistance=5,
+    teacherId=teacher2.id)
 db.add(lesson1)
 db.add(lesson2)
 db.commit()
