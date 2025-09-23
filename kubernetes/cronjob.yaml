@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: model-training
+  namespace: matching-system
+spec:
+  schedule: "0 2 * * *" # Daily at 2 AM
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: training
+            image: matching-training:latest
+            env:
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: matching-config
+                  key: redis_url
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: matching-config
+                  key: postgres_url
+            - name: MLFLOW_TRACKING_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: matching-config
+                  key: mlflow_url
+            resources:
+              requests:
+                memory: "1Gi"
+                cpu: "500m"
+              limits:
+                memory: "2Gi"
+                cpu: "1000m"
+            volumeMounts:
+            - name: model-storage
+              mountPath: /app/models
+            - name: data-storage
+              mountPath: /app/data
+          volumes:
+          - name: model-storage
+            persistentVolumeClaim:
+              claimName: model-pvc
+          - name: data-storage
+            persistentVolumeClaim:
+              claimName: data-pvc
+          restartPolicy: OnFailure

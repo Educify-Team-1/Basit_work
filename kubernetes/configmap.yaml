@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matching-config
+  namespace: matching-system
+data:
+  redis_url: "redis://redis-service:6379"
+  mlflow_url: "http://mlflow-service:5000"
+  postgres_url: "postgresql://user:password@postgres-service:5432/matching_db"
+  log_level: "INFO"
+  model_retrain_threshold: "0.8"

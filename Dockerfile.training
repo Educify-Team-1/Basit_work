@@ -1,0 +1,19 @@
+# Dockerfile.training
+FROM python:3.11-slim
+WORKDIR /app
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+# Copy requirements and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN mkdir -p /app/models /app/data
+# Copy training code
+COPY training.py matcher.py dataset_generator.py ./
+COPY models/ ./models/
+COPY data/ ./data/
+# Run training pipeline
+CMD ["python", "training.py"]
