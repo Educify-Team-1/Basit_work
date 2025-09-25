@@ -1,9 +1,0 @@
-# Byte-compiled / cache
-__pycache__/
-.venv/
-.env/
-build/
-dist/
-.vscode/
-.idea/
-
