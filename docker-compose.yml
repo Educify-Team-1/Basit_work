@@ -1,0 +1,15 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: educify1-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app
+      - ./logs:/app/logs
+    environment:
+      DEBUG: "True"
+      DATA_SOURCE: "local"
+    restart: unless-stopped

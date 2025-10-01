@@ -1,0 +1,73 @@
+[
+    {
+      "id": "T001",
+      "name": "Dr. Jane Smith",
+      "email": "jane.smith@example.com",
+      "subjects": ["Mathematics", "Calculus", "Algebra"],
+      "hourly_rate": 45.0,
+      "rating": 4.8,
+      "total_reviews": 120,
+      "availability": [
+        {"day": "Monday", "start_time": "10:00", "end_time": "20:00"},
+        {"day": "Wednesday", "start_time": "10:00", "end_time": "20:00"},
+        {"day": "Friday", "start_time": "14:00", "end_time": "18:00"}
+      ],
+      "experience_years": 8,
+      "bio": "PhD in Mathematics with 8 years of teaching experience",
+      "teaching_style": "Interactive and problem-solving focused",
+      "certifications": ["PhD Mathematics", "Teaching Certificate"]
+    },
+    {
+      "id": "T002",
+      "name": "Prof. Michael Johnson",
+      "email": "michael.j@example.com",
+      "subjects": ["Physics", "Mathematics"],
+      "hourly_rate": 55.0,
+      "rating": 4.9,
+      "total_reviews": 95,
+      "availability": [
+        {"day": "Monday", "start_time": "09:00", "end_time": "17:00"},
+        {"day": "Tuesday", "start_time": "09:00", "end_time": "17:00"}
+      ],
+      "experience_years": 12,
+      "bio": "Professor of Physics specializing in quantum mechanics",
+      "teaching_style": "Conceptual understanding with real-world examples",
+      "certifications": ["PhD Physics", "University Professor"]
+    },
+    {
+      "id": "T003",
+      "name": "Sarah Williams",
+      "email": "sarah.w@example.com",
+      "subjects": ["Chemistry", "Biology"],
+      "hourly_rate": 38.0,
+      "rating": 4.7,
+      "total_reviews": 78,
+      "availability": [
+        {"day": "Tuesday", "start_time": "14:00", "end_time": "21:00"},
+        {"day": "Thursday", "start_time": "14:00", "end_time": "21:00"},
+        {"day": "Saturday", "start_time": "10:00", "end_time": "16:00"}
+      ],
+      "experience_years": 5,
+      "bio": "Experienced chemistry teacher with lab background",
+      "teaching_style": "Hands-on experiments and visual demonstrations",
+      "certifications": ["MSc Chemistry", "Teaching License"]
+    },
+    {
+      "id": "T004",
+      "name": "Robert Chen",
+      "email": "robert.c@example.com",
+      "subjects": ["Mathematics", "Computer Science"],
+      "hourly_rate": 42.0,
+      "rating": 4.6,
+      "total_reviews": 65,
+      "availability": [
+        {"day": "Monday", "start_time": "15:00", "end_time": "19:00"},
+        {"day": "Wednesday", "start_time": "15:00", "end_time": "19:00"},
+        {"day": "Friday", "start_time": "15:00", "end_time": "19:00"}
+      ],
+      "experience_years": 6,
+      "bio": "Math and CS educator passionate about technology",
+      "teaching_style": "Logical thinking and step-by-step approach",
+      "certifications": ["MSc Computer Science", "Teaching Certificate"]
+    }
+  ]

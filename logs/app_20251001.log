@@ -1,0 +1,6 @@
+2025-10-01 09:03:37,088 - app.core.logging - INFO - Starting Student-Teacher Matching System v1.0.0
+2025-10-01 09:03:37,088 - app.core.logging - INFO - Starting Student-Teacher Matching System v1.0.0
+2025-10-01 09:03:37,088 - app.core.logging - INFO - Starting Student-Teacher Matching System v1.0.0
+2025-10-01 09:09:11,383 - app.core.logging - INFO - Finding matches for student S001 for subject Mathematics
+2025-10-01 09:09:11,383 - app.core.logging - INFO - After subject filter: 2 candidates
+2025-10-01 09:09:11,383 - app.core.logging - INFO - After budget filter: 2 candidates

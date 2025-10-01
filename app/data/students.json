@@ -1,0 +1,28 @@
+[
+    {
+      "id": "S001",
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "subjects_needed": ["Mathematics", "Physics"],
+      "budget": 50.0,
+      "availability": [
+        {"day": "Monday", "start_time": "14:00", "end_time": "18:00"},
+        {"day": "Wednesday", "start_time": "14:00", "end_time": "18:00"}
+      ],
+      "preferred_learning_style": "visual",
+      "current_level": "intermediate"
+    },
+    {
+      "id": "S002",
+      "name": "Alice Smith",
+      "email": "alice.smith@example.com",
+      "subjects_needed": ["Chemistry", "Biology"],
+      "budget": 40.0,
+      "availability": [
+        {"day": "Tuesday", "start_time": "16:00", "end_time": "20:00"},
+        {"day": "Thursday", "start_time": "16:00", "end_time": "20:00"}
+      ],
+      "preferred_learning_style": "hands-on",
+      "current_level": "beginner"
+    }
+  ]
