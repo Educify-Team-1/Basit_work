@@ -1,15 +1,15 @@
+version: '3.8'
+
 services:
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: educify1-api
+    build: .
     ports:
       - "8000:8000"
     volumes:
       - ./app:/app/app
       - ./logs:/app/logs
     environment:
-      DEBUG: "True"
-      DATA_SOURCE: "local"
+      - DEBUG=True
+      - DATA_SOURCE=api
+      - API_KEY=mirzaKey
     restart: unless-stopped

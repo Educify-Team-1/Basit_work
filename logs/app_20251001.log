@@ -4,3 +4,10 @@
 2025-10-01 09:09:11,383 - app.core.logging - INFO - Finding matches for student S001 for subject Mathematics
 2025-10-01 09:09:11,383 - app.core.logging - INFO - After subject filter: 2 candidates
 2025-10-01 09:09:11,383 - app.core.logging - INFO - After budget filter: 2 candidates
+2025-10-01 13:30:17,785 - app.core.logging - INFO - Starting Student-Teacher Matching System v1.0.0
+2025-10-01 13:31:28,357 - app.core.logging - INFO - Finding matches for student S001 for subject Mathematics
+2025-10-01 13:31:28,357 - app.core.logging - INFO - After subject filter: 2 candidates
+2025-10-01 13:31:28,358 - app.core.logging - INFO - After budget filter: 2 candidates
+2025-10-01 13:31:28,931 - app.core.logging - INFO - After availability filter: 2 candidates
+2025-10-01 13:31:29,263 - app.core.logging - INFO - Match request completed: 2 matches found
+2025-10-02 00:53:47,807 - app.core.logging - INFO - Shutting down application

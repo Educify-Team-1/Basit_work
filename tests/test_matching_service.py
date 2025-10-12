@@ -44,7 +44,7 @@ def sample_teachers():
             name="Teacher Two",
             email="t2@example.com",
             subjects=["Mathematics"],
-            hourly_rate=60.0,  # Over budget
+            hourly_rate=60.0,
             rating=4.9,
             total_reviews=150,
             availability=[
@@ -67,22 +67,14 @@ def test_filter_by_budget(matching_service, sample_teachers):
 
 
 def test_find_matches_success(matching_service, sample_student, sample_teachers):
-    response = matching_service.find_matches(
-        sample_student, 
-        sample_teachers, 
-        "Mathematics"
-    )
+    response = matching_service.find_matches(sample_student, sample_teachers, "Mathematics")
     assert response.success is True
     assert response.total_matches >= 1
     assert response.matches[0].teacher.id == "T001"
 
 
 def test_find_matches_no_budget(matching_service, sample_student, sample_teachers):
-    sample_student.budget = 30.0  # Below all teachers
-    response = matching_service.find_matches(
-        sample_student,
-        sample_teachers,
-        "Mathematics"
-    )
+    sample_student.budget = 30.0
+    response = matching_service.find_matches(sample_student, sample_teachers, "Mathematics")
     assert response.success is False
     assert "budget" in response.message.lower()

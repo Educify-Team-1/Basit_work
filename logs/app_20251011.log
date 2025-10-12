@@ -1,0 +1,24 @@
+2025-10-11 20:25:04,144 - httpx - INFO - HTTP Request: GET http://api.staging.educify.org/api/v1/students/cly6z5pe802pg9ovtq5z01r6v "HTTP/1.1 301 Moved Permanently"
+2025-10-11 20:25:04,144 - app.core.logging - ERROR - HTTP error: 301
+2025-10-11 20:26:35,992 - httpx - INFO - HTTP Request: GET http://api.staging.educify.org/api/v1/students/clldl8vd7000dm7y0o99i4ljz "HTTP/1.1 301 Moved Permanently"
+2025-10-11 20:26:35,992 - app.core.logging - ERROR - HTTP error: 301
+2025-10-11 20:27:59,723 - httpx - INFO - HTTP Request: GET http://api.staging.educify.org/api/v1/students/cmgk1xriu004w9o64b47416m4 "HTTP/1.1 301 Moved Permanently"
+2025-10-11 20:27:59,723 - app.core.logging - ERROR - HTTP error: 301
+2025-10-11 20:31:51,885 - app.core.logging - INFO - Shutting down
+2025-10-11 20:32:29,707 - app.core.logging - INFO - Shutting down
+2025-10-11 20:33:24,903 - app.core.logging - INFO - Shutting down
+2025-10-11 20:33:44,780 - app.core.logging - INFO - Shutting down
+2025-10-11 20:33:48,351 - app.core.logging - INFO -  Starting Student-Teacher Matching System v1.0.0
+2025-10-11 20:33:48,351 - app.core.logging - INFO -  Data Source: api
+2025-10-11 20:33:53,718 - app.core.logging - INFO - Shutting down
+2025-10-11 20:33:55,979 - app.core.logging - INFO -  Starting Student-Teacher Matching System v1.0.0
+2025-10-11 20:33:55,979 - app.core.logging - INFO -  Data Source: api
+2025-10-11 20:34:03,179 - app.core.logging - INFO - Shutting down
+2025-10-11 20:37:16,555 - app.core.logging - INFO -  Starting Student-Teacher Matching System v1.0.0
+2025-10-11 20:37:16,555 - app.core.logging - INFO -  Data Source: api
+2025-10-11 20:39:10,504 - httpx - INFO - HTTP Request: GET https://api.staging.educify.org/api/v1/students/cly7g9adx03eg9ovtq0xk81wj "HTTP/1.1 200 OK"
+2025-10-11 20:42:14,774 - httpx - INFO - HTTP Request: GET https://api.staging.educify.org/api/v1/students/cly7g9adx03eg9ovtq0xk81wj "HTTP/1.1 200 OK"
+2025-10-11 20:42:17,023 - httpx - INFO - HTTP Request: GET https://api.staging.educify.org/api/v1/teachers?subject=Mathematics "HTTP/1.1 200 OK"
+2025-10-11 20:52:26,877 - httpx - INFO - HTTP Request: GET https://api.staging.educify.org/api/v1/students/cly7g9adx03eg9ovtq0xk81wj "HTTP/1.1 200 OK"
+2025-10-11 20:52:33,746 - httpx - INFO - HTTP Request: GET https://api.staging.educify.org/api/v1/teachers?subject=Piano "HTTP/1.1 200 OK"
+2025-10-11 21:23:16,317 - app.core.logging - INFO - Shutting down

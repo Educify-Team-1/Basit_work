@@ -1,10 +1,9 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
-
 from app.models.teacher import Teacher
-from app.models.student import Student
 from app.models.student import TimeSlot
+
 
 class MatchScore(BaseModel):
     overall_score: float = Field(ge=0, le=100)
@@ -26,17 +25,6 @@ class MatchRequest(BaseModel):
     student_id: str
     subject: str
     preferred_time_slots: Optional[List[TimeSlot]] = None
-    
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "student_id": "S001",
-                "subject": "Mathematics",
-                "preferred_time_slots": [
-                    {"day": "Monday", "start_time": "14:00", "end_time": "16:00"}
-                ]
-            }
-        }
 
 
 class MatchResponse(BaseModel):

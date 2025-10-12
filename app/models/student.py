@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from datetime import time
 
 
 class TimeSlot(BaseModel):
@@ -18,17 +17,3 @@ class Student(BaseModel):
     availability: List[TimeSlot]
     preferred_learning_style: Optional[str] = None
     current_level: Optional[str] = None
-    
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "id": "S001",
-                "name": "John Doe",
-                "email": "john@example.com",
-                "subjects_needed": ["Mathematics", "Physics"],
-                "budget": 50.0,
-                "availability": [
-                    {"day": "Monday", "start_time": "14:00", "end_time": "18:00"}
-                ]
-            }
-        }

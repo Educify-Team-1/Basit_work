@@ -1,28 +1,38 @@
 [
-    {
-      "id": "S001",
-      "name": "John Doe",
-      "email": "john.doe@example.com",
-      "subjects_needed": ["Mathematics", "Physics"],
-      "budget": 50.0,
-      "availability": [
-        {"day": "Monday", "start_time": "14:00", "end_time": "18:00"},
-        {"day": "Wednesday", "start_time": "14:00", "end_time": "18:00"}
-      ],
-      "preferred_learning_style": "visual",
-      "current_level": "intermediate"
-    },
-    {
-      "id": "S002",
-      "name": "Alice Smith",
-      "email": "alice.smith@example.com",
-      "subjects_needed": ["Chemistry", "Biology"],
-      "budget": 40.0,
-      "availability": [
-        {"day": "Tuesday", "start_time": "16:00", "end_time": "20:00"},
-        {"day": "Thursday", "start_time": "16:00", "end_time": "20:00"}
-      ],
-      "preferred_learning_style": "hands-on",
-      "current_level": "beginner"
-    }
-  ]
+  {
+    "id": "T003",
+    "name": "Sarah Williams",
+    "email": "sarah.w@example.com",
+    "subjects": ["Chemistry", "Biology"],
+    "hourly_rate": 38.0,
+    "rating": 4.7,
+    "total_reviews": 78,
+    "availability": [
+      {"day": "Tuesday", "start_time": "14:00", "end_time": "21:00"},
+      {"day": "Thursday", "start_time": "14:00", "end_time": "21:00"},
+      {"day": "Saturday", "start_time": "10:00", "end_time": "16:00"}
+    ],
+    "experience_years": 5,
+    "bio": "Chemistry teacher with lab background",
+    "teaching_style": "Hands-on experiments",
+    "certifications": ["MSc Chemistry", "Teaching License"]
+  },
+  {
+    "id": "T004",
+    "name": "Robert Chen",
+    "email": "robert.c@example.com",
+    "subjects": ["Mathematics", "Computer Science"],
+    "hourly_rate": 42.0,
+    "rating": 4.6,
+    "total_reviews": 65,
+    "availability": [
+      {"day": "Monday", "start_time": "15:00", "end_time": "19:00"},
+      {"day": "Wednesday", "start_time": "15:00", "end_time": "19:00"},
+      {"day": "Friday", "start_time": "15:00", "end_time": "19:00"}
+    ],
+    "experience_years": 6,
+    "bio": "Math and CS educator",
+    "teaching_style": "Logical thinking",
+    "certifications": ["MSc Computer Science"]
+  }
+]
